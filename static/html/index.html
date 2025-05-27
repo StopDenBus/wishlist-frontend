@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<!-- Layout Datei einbinden -->
+<link rel='stylesheet' type='text/css' href='/css/layout.css'>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wunschzettel Anwendung</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="header">
+                <h1>📝 Wunschzettel</h1>
+                <button class="btn_hinzufuegen" onclick="enableEditing()">Wunsch hinzufügen</button>
+            </div>
+
+            <!-- Sortierfunktion basierend auf ausgewählten Wunschkriterien -->
+            <div class="controls">
+                <label for="sortSelect">Sortieren nach:</label>
+                <select id="sortSelect" onchange="prepareSort(this)">
+                    <option value="">-- Auswahl --</option>
+                    <option value="product">Produktname</option>
+                    <option value="price">Preis</option>
+                    <option value="priority">Priorität</option>
+                </select>
+            </div>
+
+            <!-- Wichtig ===================================================================================================================================== -->
+            <!-- Enthält nach der Ausführung alle Wünsche, wird dynamisch über JavaScript befüllt -->
+            <!-- Zuerst die Daten beschaffen und anschließend in 'listWuensche' einfügen -->
+            <!-- 'aktualisiereWunschliste();' zuletzt aufrufen, um die Webseite zu aktualisieren -->
+             <!-- Siehe fuelleListeAusDatenbank() in wunschliste.js -->
+            <div id="divWunschListe">
+                <div id="wunschListe" class="div_keine_wuensche">Noch keine Wünsche vorhanden.</div>
+            </div>
+
+            <!-- Ermöglicht den Seitenwechsel -->
+            <div class="aufteilung">
+                <button onclick="previousPage()">⬅️ Zurück</button>
+                <span id="pageInfo">Seite 1</span>
+                <button onclick="nextPage()">➡️ Weiter</button>
+            </div>
+        </div>
+
+        <!-- Zu Beginn nicht sichtbar. Wird im Verlauf der Bearbeitung je nach Bedarf ein- oder ausgeblendet -->
+        <div id="formPanel" class="right-panel">
+            <h2 id="formTitle">Wunsch hinzufügen</h2>
+            <!-- <form id="wunschForm"> -->
+                <input type="hidden" id="editId">
+                <label for="product">Produkt</label>
+                <input type="text" id="product" required>
+                <label for="preis">Preis (€)</label>
+                <input type="text" id="preis" required>
+                <label for="url">URL</label>
+                <input type="url" id="url" required>
+                <label for="prioritaet">Priorität</label>
+                <select id="prioritaet" required>
+                    <option value="Hoch">Hoch</option>
+                    <option value="Mittel">Mittel</option>
+                    <option value="Niedrig">Niedrig</option>
+                </select>
+                <div class="aktionen">
+                    <button type="submit" class="btn_speichern" onclick="saveWish()">Speichern</button>
+                    <button type="button" class="btn_abbrechen" onclick="abortEditing()">Abbrechen</button>
+                </div>
+            <!-- </form> -->
+        </div>
+    </div>
+
+    <script src="/js/wunschliste.js"></script>
+    <script>
+        let currentPage = 1;
+        const wishesPerPage = 9; // Der Wert bestimmt die Anzahl der angezeigten Wünsche
+        let listWuensche = []; // Alle Wünsche werden in dieser Liste aufgeführt
+        const apiURL = 'http://localhost:8000';
+
+        class OrderBy {
+            static #_ASC = "ascending";
+            static #_DSC = "descending";
+
+            static get ASC() { return this.#_ASC; }
+            static get DSC() { return this.#_DSC; }
+        }
+
+        
+        let sorting = {
+            sort_by: 'priority',
+            order_by: OrderBy.ASC
+        };
+
+        // Erstellt Testdaten, um die Webseite auch ohne vorhandene Daten testen zu können
+        // Diese Funktion ist ausschließlich für Testzwecke gedacht und kann später vollständig entfernt werden ^^
+        // erstelleTestDaten(30);
+        updateUI();
+    </script>
+</body>
+
+</html>
