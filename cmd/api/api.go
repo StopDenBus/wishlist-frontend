@@ -21,7 +21,7 @@ func (s *APIServer) Run() error {
 	wishRouter := wishHandler.RegisterRoutes()
 
 	router := http.NewServeMux()
-	router.Handle("/wish/", http.StripPrefix("/api/v1/wish", wishRouter))
+	router.Handle("/wish/", http.StripPrefix("/wish", wishRouter))
 	// Handle favicon
 	router.HandleFunc("/favicon.ico", faviconHandler)
 	router.HandleFunc("/", serveTemplate)

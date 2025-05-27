@@ -1,8 +1,10 @@
 package wish
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/StopDenBus/wishlist-frontend/utils"
@@ -18,9 +20,7 @@ type Wish struct {
 	Url      string  `json:"url"`
 }
 
-var wishes []Wish = []Wish{
-	{ID: 1, Product: "Microwelle", Price: 100.99, Priority: "Mittel", Url: "amazon.de"},
-}
+var wishes []Wish
 
 func NewHandler() *Handler {
 	return &Handler{}
@@ -38,11 +38,25 @@ func (h *Handler) RegisterRoutes() *http.ServeMux {
 }
 
 func getWishes(w http.ResponseWriter, r *http.Request) {
-	response := map[string]any{
-		"message": "Done",
-		"wishes":  wishes,
+	requestURL := "https://wishlist-backend.apps.gusek.info/wishes"
+	res, err := http.Get(requestURL)
+	if err != nil {
+		fmt.Printf("error making http request: %s\n", err)
+		os.Exit(1)
 	}
-	utils.WriteJSONResponse(w, http.StatusOK, response)
+	err = json.NewDecoder(r.Body).Decode(&wishes)
+	if err != nil {
+		fmt.Printf("error parsing request: %s\n", err)
+		os.Exit(1)
+	}
+	fmt.Printf("client: got response!\n")
+	fmt.Printf("client: status code: %d\n", res.StatusCode)
+	fmt.Println(wishes)
+	// response := map[string]any{
+	// 	"message": "Done",
+	// 	"wishes":  wishes,
+	// }
+	// utils.WriteJSONResponse(w, http.StatusOK, response)
 }
 
 func getWish(w http.ResponseWriter, r *http.Request) {
