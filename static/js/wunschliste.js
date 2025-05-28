@@ -30,7 +30,7 @@ async function updateUI() {
 
         divWunschListe.innerHTML = [...existierendeWuensche, ...leereWuensche].join("");
     }
-    anzahlSeiten = Math.ceil(listWuensche.length / wishesPerPage);
+    anzahlSeiten = Math.ceil(wishes.length / wishesPerPage);
     document.getElementById("pageInfo").textContent = `Seite ${currentPage} von ${anzahlSeiten}`;
 }
 
@@ -55,7 +55,7 @@ async function saveWish() {
     const body = JSON.stringify({ product: product, price: preis, url: product_url, priority: prioritaet })
 
     if (id) {
-        const url = apiURL + "/wish/" + id;
+        const url = apiURL + "/" + id + "/";
         try {
             const response = await fetch(url, { 
                 method: "PUT",
@@ -69,7 +69,7 @@ async function saveWish() {
             console.error(error.message);
         }
     } else {
-        const url = apiURL + "/wish";
+        const url = apiURL + "/wish/";
         try {
             const response = await fetch(url, { 
                 method: "POST",
@@ -89,10 +89,11 @@ async function saveWish() {
 }
 
 async function updateWish(id) {
-    const url = apiURL + "/wish/by_id/" + id;
+    const url = apiURL + "/by_id/" + id + "/";
     let wish = {};
     try {
         const response = await fetch(url, {
+            method: "GET",
             headers: {
                 'Accept': 'application/json',
             },            
@@ -124,9 +125,9 @@ function abortEditing() {
 }
 
 async function deleteWish(id) {
-    const url = apiURL + "/wish/by_id/" + id;
+    const url = apiURL + "/by_id/" + id + "/"
     try {
-        const response = await fetch(url, { method: "DELETE"});
+        const response = await fetch(url, { method: "DELETE" });
         if (!response.ok) {
             throw new Error('Response status: ${response.status}');
         }
@@ -178,8 +179,10 @@ function previousPage() {
 }
 
 async function getWishes() {
-    const url = apiURL + "/wishes?";
+    const url = apiURL + "/?";
     let wishes = [];
+    const url_with_parameters = url + new URLSearchParams({order_by: sorting.order_by, sort_by: sorting.sort_by});
+    console.info(url_with_parameters);
     try {
         const response = await fetch(url + new URLSearchParams({
             order_by: sorting.order_by,
