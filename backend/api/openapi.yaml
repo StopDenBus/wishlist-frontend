@@ -1,0 +1,369 @@
+openapi: 3.1.0
+info:
+  title: FastAPI
+  version: 0.1.0
+servers:
+- description: External address
+  url: https://wishlist-backend.apps.gusek.info
+- description: Internal address
+  url: http://wishlist-backend.wishlist.svc.cluster.local
+tags:
+- description: Manage wishes
+  name: wish
+paths:
+  /wish/by_id/{id}:
+    delete:
+      description: "id: Your item ID description will be here"
+      operationId: delete_wish_by_id_wish_by_id__id__delete
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          title: Id
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wish'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Delete Wish By Id
+      tags:
+      - wish
+    get:
+      description: |-
+        Create a new function with partial application of the given arguments
+        and keywords.
+      operationId: get_wish_by_id_wish_by_id__id__get
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          title: Id
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wish'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Wish By Id
+      tags:
+      - wish
+  /wish/by_name/{wish}:
+    delete:
+      description: |-
+        Create a new function with partial application of the given arguments
+        and keywords.
+      operationId: delete_wish_by_name_wish_by_name__wish__delete
+      parameters:
+      - explode: false
+        in: path
+        name: wish
+        required: true
+        schema:
+          title: Wish
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wish'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Delete Wish By Name
+      tags:
+      - wish
+    get:
+      description: |-
+        Create a new function with partial application of the given arguments
+        and keywords.
+      operationId: get_wish_by_name_wish_by_name__wish__get
+      parameters:
+      - explode: false
+        in: path
+        name: wish
+        required: true
+        schema:
+          title: Wish
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wish'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Wish By Name
+      tags:
+      - wish
+  /wishes:
+    get:
+      description: |-
+        Create a new function with partial application of the given arguments
+        and keywords.
+      operationId: get_wishes_wishes_get
+      parameters:
+      - explode: true
+        in: query
+        name: sort_by
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortBy'
+        style: form
+      - explode: true
+        in: query
+        name: order_by
+        required: false
+        schema:
+          $ref: '#/components/schemas/OrderBy'
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Wish'
+                type: array
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Wishes
+      tags:
+      - wish
+  /wish:
+    post:
+      description: |-
+        Create a new function with partial application of the given arguments
+        and keywords.
+      operationId: create_wish_wish_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WishIn'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wish'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create Wish
+      tags:
+      - wish
+  /wish/{id}:
+    put:
+      description: |-
+        Create a new function with partial application of the given arguments
+        and keywords.
+      operationId: update_wish_wish__id__put
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          title: Id
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WishIn'
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wish'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Update Wish
+      tags:
+      - wish
+  /readiness:
+    get:
+      operationId: readiness_readiness_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+      summary: Readiness
+components:
+  schemas:
+    HTTPValidationError:
+      example:
+        detail:
+        - msg: msg
+          loc:
+          - ValidationError_loc_inner
+          - ValidationError_loc_inner
+          type: type
+        - msg: msg
+          loc:
+          - ValidationError_loc_inner
+          - ValidationError_loc_inner
+          type: type
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+      title: HTTPValidationError
+    OrderBy:
+      enum:
+      - ascending
+      - descending
+      title: OrderBy
+      type: string
+    PriorityEnum:
+      enum:
+      - Hoch
+      - Mittel
+      - Niedrig
+      title: PriorityEnum
+      type: string
+    SortBy:
+      enum:
+      - product
+      - price
+      - url
+      - priority
+      title: SortBy
+      type: string
+    ValidationError:
+      example:
+        msg: msg
+        loc:
+        - ValidationError_loc_inner
+        - ValidationError_loc_inner
+        type: type
+      properties:
+        loc:
+          items:
+            $ref: '#/components/schemas/ValidationError_loc_inner'
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Wish:
+      example:
+        product: product
+        price: 6.027456183070403
+        id: 0
+        priority: Hoch
+        url: url
+      properties:
+        id:
+          title: Id
+          type: integer
+        product:
+          title: Product
+          type: string
+        price:
+          title: Price
+          type: number
+        url:
+          title: Url
+          type: string
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+      required:
+      - id
+      - price
+      - priority
+      - product
+      - url
+      title: Wish
+    WishIn:
+      example:
+        product: product
+        price: 0.8008281904610115
+        priority: Hoch
+        url: url
+      properties:
+        product:
+          title: Product
+          type: string
+        price:
+          title: Price
+          type: number
+        url:
+          title: Url
+          type: string
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+      required:
+      - price
+      - priority
+      - product
+      - url
+      title: WishIn
+    ValidationError_loc_inner:
+      anyOf:
+      - type: string
+      - type: integer
