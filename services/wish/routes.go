@@ -1,14 +1,14 @@
 package wish
 
 import (
-	"encoding/json"
+	"context"
 	"fmt"
 	"net/http"
 	"os"
 	"strconv"
 
+	backend "github.com/StopDenBus/wishlist-frontend/backend"
 	"github.com/StopDenBus/wishlist-frontend/utils"
-	backend-client "github.com/StopDenBus/wishlist-frontend/backend-api"
 )
 
 type Handler struct{}
@@ -39,19 +39,19 @@ func (h *Handler) RegisterRoutes() *http.ServeMux {
 }
 
 func getWishes(w http.ResponseWriter, r *http.Request) {
-	ctx := context.WithValue(context.Background(), backend-api.ContextServerIndex, 1)
-	sortBy := backend-client.SortBy("product") // SortBy |  (optional)
-	orderBy := backend-client.OrderBy("ascending") // OrderBy |  (optional)
+	sortBy := backend.SortBy("product")     // SortBy |  (optional)
+	orderBy := backend.OrderBy("ascending") // OrderBy |  (optional)
 
-	configuration := backend-client.NewConfiguration()
-	apiClient := backend-client.NewAPIClient(configuration)
+	configuration := backend.NewConfiguration()
+	apiClient := backend.NewAPIClient(configuration)
 	resp, r, err := apiClient.WishAPI.GetWishesWishesGet(context.Background()).SortBy(sortBy).OrderBy(orderBy).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `WishAPI.GetWishesWishesGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 	// response from `GetWishesWishesGet`: []Wish
-	fmt.Fprintf(os.Stdout, "Response from `WishAPI.GetWishesWishesGet`: %v\n", resp)	
+	fmt.Fprintf(os.Stdout, "Response from `WishAPI.GetWishesWishesGet`: %v\n", resp)
+
 	// response := map[string]any{
 	// 	"message": "Done",
 	// 	"wishes":  wishes,
