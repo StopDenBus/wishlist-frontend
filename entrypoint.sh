@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
 /app/bin/wishlist-frontend
