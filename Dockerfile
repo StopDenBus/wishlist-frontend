@@ -1,4 +1,4 @@
-FROM golang:alpine3.22
+FROM alpine:3.22
 
 RUN addgroup -S app -g 1001 && adduser -S app -G app -u 1001
 
