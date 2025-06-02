@@ -94,7 +94,7 @@ func NewConfiguration() *Configuration {
 				Description: "External address",
 			},
 			{
-				URL: "http://wishlist-backend.wishlist.svc.cluster.local",
+				URL: "http://wishlist-backend.wishlist.svc.cluster.local:8000",
 				Description: "Internal address",
 			},
 		},
