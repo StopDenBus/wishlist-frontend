@@ -6,7 +6,7 @@ servers:
 - description: External address
   url: https://wishlist-backend.apps.gusek.info
 - description: Internal address
-  url: http://wishlist-backend.wishlist.svc.cluster.local
+  url: http://wishlist-backend.wishlist.svc.cluster.local:8000
 tags:
 - description: Manage wishes
   name: wish
